@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   TXT
   spec.homepage = "https://github.com/singlespot/snowflake_odbc_adapter"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 3.2.0"
+  spec.required_ruby_version = ">= 3.1.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/singlespot/snowflake_odbc_adapter"
@@ -33,6 +33,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Uncomment to register a new dependency of your gem
+  spec.add_dependency "activerecord", ">= 7.2"
   spec.add_dependency "ruby-odbc"
 
   # For more information and examples about making a new gem, check out our

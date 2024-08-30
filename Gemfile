@@ -11,4 +11,8 @@ gem "minitest", "~> 5.0"
 
 gem "rubocop", "~> 1.21"
 
-gem 'ruby-odbc', :git => 'https://github.com/vhermecz/ruby-odbc.git', branch: 'main'
+gem "ruby-odbc", git: "https://github.com/vhermecz/ruby-odbc.git", branch: "main"
+
+group :test do
+  gem "simplecov"
+end
