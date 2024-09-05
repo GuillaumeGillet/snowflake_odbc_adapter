@@ -64,6 +64,14 @@ module ActiveRecord
         ::SnowflakeOdbcAdapter::Metadata.instance.connection(@config, @raw_connection)
       end
 
+      def supports_insert_returning?
+        false
+      end
+
+      def active?
+        @raw_connection.connected?
+      end
+
       def reconnect
         @raw_connection, @config = self.class.new_client(@config)
       end

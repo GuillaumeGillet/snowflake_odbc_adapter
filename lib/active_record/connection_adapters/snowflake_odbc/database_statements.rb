@@ -2,6 +2,11 @@ module ActiveRecord
   module ConnectionAdapters # :nodoc:
     module SnowflakeOdbc
       module DatabaseStatements
+        # Have to because of create table
+        def prepared_statements
+          false
+        end
+
         def internal_exec_query(sql, name = "SQL", binds = [], prepare: false, async: false, allow_retry: false) # :nodoc:
           log(sql, name, binds) do |notification_payload|
             if prepare

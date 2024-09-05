@@ -14,5 +14,6 @@ gem "rubocop", "~> 1.21"
 gem "ruby-odbc", git: "https://github.com/vhermecz/ruby-odbc.git", branch: "main"
 
 group :test do
+  gem "debug"
   gem "simplecov"
 end

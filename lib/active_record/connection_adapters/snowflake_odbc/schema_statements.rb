@@ -32,18 +32,30 @@ module ActiveRecord
         def tables(_name = nil)
           stmt   = @raw_connection.tables
           result = stmt.fetch_all || []
-          stmt.drop
+          stmt&.drop
 
           result.each_with_object([]) do |row, table_names|
             table_names << format_case(row[2])
           end
         end
 
-        def column_definitions(table_name)
-          stmt   = @raw_connection.columns(native_case(table_name.to_s))
+        # Checks to see if the table +table_name+ exists on the database.
+        #
+        #   table_exists?(:developers)
+        #
+        def table_exists?(table_name)
+          stmt = @raw_connection.tables(native_case(table_name.to_s))
           result = stmt.fetch_all || []
           stmt.drop
-          result
+          result.size.positive?
+        end
+
+        def column_definitions(table_name)
+          stmt = @raw_connection.columns(native_case(table_name.to_s))
+          result = stmt.fetch_all || []
+          stmt.drop
+          # Column can return some technical columns
+          ::SnowflakeOdbcAdapter::Snowflake.column_filters(result)
         end
 
         def new_column_from_field(table_name, field, _definitions)
@@ -60,7 +72,7 @@ module ActiveRecord
           stmt   = @raw_connection.primary_keys(native_case(table_name.to_s))
           result = stmt.fetch_all || []
           stmt&.drop
-          result[0] && result[0][3]
+          result[0] && format_case(result[0][3])
         end
 
         private
