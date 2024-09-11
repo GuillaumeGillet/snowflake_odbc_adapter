@@ -76,5 +76,3 @@ User.find(4).todos.create(
     { body: "Integer molestie ornare velit, eu interdum felis euismod vitae." }
   ]
 )
-
-binding.irb
