@@ -1,6 +1,6 @@
 require "test_helper"
 
-class CalculationsTest < Minitest::Test
+class TestCalculations < Minitest::Test
   def test_count
     assert_equal 6, User.count
     assert_equal 10, Todo.count

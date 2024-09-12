@@ -123,6 +123,10 @@ module ActiveRecord
       def reconnect
         @raw_connection, @config = self.class.new_client(@config)
       end
+
+      def disconnect!
+        @raw_connection.disconnect if @raw_connection.connected?
+      end
     end
     register "odbc", "ActiveRecord::ConnectionAdapters::SnowflakeOdbcAdapter", "active_record/connection_adapters/snowflake_odbc_adapter"
   end

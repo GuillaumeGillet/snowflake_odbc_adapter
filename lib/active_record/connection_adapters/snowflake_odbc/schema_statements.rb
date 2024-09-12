@@ -9,15 +9,8 @@ module ActiveRecord
         SQL_NULLABLE = 1
         SQL_NULLABLE_UNKNOWN = 2
 
-        # Returns a Hash of mappings from the abstract data types to the native
-        # database types. See TableDefinition#column for details on the recognized
-        # abstract data types.
-        # def native_database_types
-        #   @native_database_types ||= ColumnMetadata.new(self).native_database_types
-        # end
-
         def data_sources
-          tables
+          tables | views
         end
 
         # Returns a Hash of mappings from the abstract data types to the native
@@ -33,7 +26,19 @@ module ActiveRecord
           stmt   = @raw_connection.tables
           result = stmt.fetch_all || []
           stmt&.drop
+          result = ::SnowflakeOdbcAdapter::Snowflake.table_filter(result, @raw_connection)
+          result.each_with_object([]) do |row, table_names|
+            table_names << format_case(row[2])
+          end
+        end
 
+        # Returns an array of view names, for database views visible on the
+        # current connection.
+        def views(_name = nil)
+          stmt   = @raw_connection.tables
+          result = stmt.fetch_all || []
+          stmt&.drop
+          result = ::SnowflakeOdbcAdapter::Snowflake.view_filter(result, @raw_connection)
           result.each_with_object([]) do |row, table_names|
             table_names << format_case(row[2])
           end
@@ -73,6 +78,21 @@ module ActiveRecord
           result = stmt.fetch_all || []
           stmt&.drop
           result[0] && format_case(result[0][3])
+        end
+
+        def rename_table(table_name, new_name, **options)
+          validate_table_length!(new_name) unless options[:_uses_legacy_table_name]
+          clear_cache!
+          schema_cache.clear_data_source_cache!(table_name.to_s)
+          schema_cache.clear_data_source_cache!(new_name.to_s)
+          execute "ALTER TABLE #{quote_table_name(table_name)} RENAME TO #{quote_table_name(new_name)}"
+        end
+
+        # Renames a column in a table.
+        def rename_column(table_name, column_name, new_column_name) # :nodoc:
+          clear_cache!
+          execute("ALTER TABLE #{quote_table_name(table_name)} #{rename_column_sql(table_name, column_name,
+                                                                                   new_column_name)}")
         end
 
         private
