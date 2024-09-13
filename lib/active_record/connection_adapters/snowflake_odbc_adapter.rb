@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-require 'active_record'
-require 'active_record/connection_adapters/abstract_adapter'
+require "active_record"
+require "active_record/connection_adapters/abstract_adapter"
 require "active_record/connection_adapters/snowflake_odbc/quoting"
 require "active_record/connection_adapters/snowflake_odbc/database_statements"
 require "active_record/connection_adapters/snowflake_odbc/schema_statements"
 require "active_record/connection_adapters/snowflake_odbc/column"
 require "snowflake_odbc_adapter/metadata"
 require "snowflake_odbc_adapter/column_metadata"
-require 'odbc'
-require 'odbc_utf8'
+require "odbc"
+require "odbc_utf8"
 
 module ActiveRecord
   module ConnectionAdapters
@@ -21,7 +21,6 @@ module ActiveRecord
       include SnowflakeOdbc::SchemaStatements
 
       class << self
-
         def new_client(config)
           config = config.symbolize_keys
           _, config = if config.key?(:dsn)
@@ -29,10 +28,10 @@ module ActiveRecord
           elsif config.key?(:conn_str)
             str_connection(config)
           else
-            raise ArgumentError, 'No data source name (:dsn) or connection string (:conn_str) specified.'
+            raise ArgumentError, "No data source name (:dsn) or connection string (:conn_str) specified."
           end
         rescue ::ODBC::Error => error
-          #TODO: be more specific on error to raise 
+          # TODO: be more specific on error to raise
           raise ActiveRecord::ConnectionNotEstablished, error.message
         end
 
@@ -46,20 +45,20 @@ module ActiveRecord
         end
 
         def str_connection(config)
-          attrs = config[:conn_str].split(';').map { |option| option.split('=', 2) }.to_h
-          odbc_module = attrs['ENCODING'] == 'utf8' ? ODBC_UTF8 : ODBC
+          attrs = config[:conn_str].split(";").map { |option| option.split("=", 2) }.to_h
+          odbc_module = attrs["ENCODING"] == "utf8" ? ODBC_UTF8 : ODBC
           driver = odbc_module::Driver.new
-          driver.name = 'odbc'
+          driver.name = "odbc"
           driver.attrs = attrs
           connection = odbc_module::Database.new.drvconnect(driver)
           # encoding_bug indicates that the driver is using non ASCII and has the issue referenced here https://github.com/larskanis/ruby-odbc/issues/2
-          [connection, config.merge(driver: driver, encoding: attrs['ENCODING'], encoding_bug: attrs['ENCODING'] == 'utf8')]
+          [ connection, config.merge(driver: driver, encoding: attrs["ENCODING"], encoding_bug: attrs["ENCODING"] == "utf8") ]
         end
 
 
         def initialize_type_map(m)
           super(m)
-          #Integer are negated by active record
+          # Integer are negated by active record
           m.register_type (-1 * ODBC::SQL_TIMESTAMP),    Type::DateTime.new
           m.register_type "boolean",                     Type::Boolean.new
           m.register_type "json",                        Type::Json.new

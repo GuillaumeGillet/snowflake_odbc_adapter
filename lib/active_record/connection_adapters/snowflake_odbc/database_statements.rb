@@ -1,7 +1,7 @@
 module ActiveRecord
   module ConnectionAdapters # :nodoc:
     module SnowflakeOdbc
-      module DatabaseStatements
+      module DatabaseStatements # :nodoc:
         # Have to because of create table
         def prepared_statements
           true

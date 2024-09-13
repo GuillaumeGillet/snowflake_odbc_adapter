@@ -6,18 +6,18 @@ require "snowflake_odbc_adapter/snowflake"
 module SnowflakeOdbcAdapter
   class ColumnMetadata # :nodoc:
     GENERICS = {
-      primary_key: [ODBC::SQL_INTEGER, ODBC::SQL_SMALLINT],
-      string: [ODBC::SQL_VARCHAR],
-      text: [ODBC::SQL_LONGVARCHAR, ODBC::SQL_VARCHAR],
-      integer: [ODBC::SQL_INTEGER, ODBC::SQL_SMALLINT],
-      decimal: [ODBC::SQL_NUMERIC, ODBC::SQL_DECIMAL],
-      float: [ODBC::SQL_DOUBLE, ODBC::SQL_REAL],
-      datetime: [ODBC::SQL_TYPE_TIMESTAMP, ODBC::SQL_TIMESTAMP],
-      timestamp: [ODBC::SQL_TYPE_TIMESTAMP, ODBC::SQL_TIMESTAMP],
-      time: [ODBC::SQL_TYPE_TIME, ODBC::SQL_TIME, ODBC::SQL_TYPE_TIMESTAMP, ODBC::SQL_TIMESTAMP],
-      date: [ODBC::SQL_TYPE_DATE, ODBC::SQL_DATE, ODBC::SQL_TYPE_TIMESTAMP, ODBC::SQL_TIMESTAMP],
-      binary: [ODBC::SQL_LONGVARBINARY, ODBC::SQL_VARBINARY],
-      boolean: [ODBC::SQL_BIT, ODBC::SQL_TINYINT, ODBC::SQL_SMALLINT, ODBC::SQL_INTEGER]
+      primary_key: [ ODBC::SQL_INTEGER, ODBC::SQL_SMALLINT ],
+      string: [ ODBC::SQL_VARCHAR ],
+      text: [ ODBC::SQL_LONGVARCHAR, ODBC::SQL_VARCHAR ],
+      integer: [ ODBC::SQL_INTEGER, ODBC::SQL_SMALLINT ],
+      decimal: [ ODBC::SQL_NUMERIC, ODBC::SQL_DECIMAL ],
+      float: [ ODBC::SQL_DOUBLE, ODBC::SQL_REAL ],
+      datetime: [ ODBC::SQL_TYPE_TIMESTAMP, ODBC::SQL_TIMESTAMP ],
+      timestamp: [ ODBC::SQL_TYPE_TIMESTAMP, ODBC::SQL_TIMESTAMP ],
+      time: [ ODBC::SQL_TYPE_TIME, ODBC::SQL_TIME, ODBC::SQL_TYPE_TIMESTAMP, ODBC::SQL_TIMESTAMP ],
+      date: [ ODBC::SQL_TYPE_DATE, ODBC::SQL_DATE, ODBC::SQL_TYPE_TIMESTAMP, ODBC::SQL_TIMESTAMP ],
+      binary: [ ODBC::SQL_LONGVARBINARY, ODBC::SQL_VARBINARY ],
+      boolean: [ ODBC::SQL_BIT, ODBC::SQL_TINYINT, ODBC::SQL_SMALLINT, ODBC::SQL_INTEGER ]
     }.freeze
 
     attr_reader :adapter

@@ -5,8 +5,8 @@ require_relative "lib/snowflake_odbc_adapter/version"
 Gem::Specification.new do |spec|
   spec.name = "snowflake_odbc_adapter"
   spec.version = SnowflakeOdbcAdapter::VERSION
-  spec.authors = ["Guillaume GILLET"]
-  spec.email = ["guillaume.gillet@singlespot.com"]
+  spec.authors = [ "Guillaume GILLET" ]
+  spec.email = [ "guillaume.gillet@singlespot.com" ]
 
   spec.summary = "ODBC ActiveRecord adapter design for Snowflake"
   spec.description = <<~TXT
@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   end
   spec.bindir = "exe"
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
-  spec.require_paths = ["lib"]
+  spec.require_paths = [ "lib" ]
 
   # Uncomment to register a new dependency of your gem
   spec.add_dependency "activerecord", ">= 7.2"

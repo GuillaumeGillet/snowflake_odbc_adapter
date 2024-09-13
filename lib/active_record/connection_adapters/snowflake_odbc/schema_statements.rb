@@ -106,7 +106,7 @@ module ActiveRecord
           args[:sql_type] = "boolean" if col_native_type == "BOOLEAN"
           args[:sql_type] = "json" if %w[VARIANT JSON STRUCT].include?(col_native_type)
           args[:sql_type] = "date" if col_native_type == "DATE"
-          if [ODBC::SQL_DECIMAL, ODBC::SQL_NUMERIC].include?(col_sql_type)
+          if [ ODBC::SQL_DECIMAL, ODBC::SQL_NUMERIC ].include?(col_sql_type)
             args[:scale]     = col_scale || 0
             args[:precision] = col_limit
           end

@@ -52,7 +52,7 @@ module SnowflakeOdbcAdapter
         with_mutex do
           @metadata = Hash[FIELDS.map do |field|
             info = @connection.get_info(ODBC.const_get(field))
-            [field, info]
+            [ field, info ]
           end]
         end
       end

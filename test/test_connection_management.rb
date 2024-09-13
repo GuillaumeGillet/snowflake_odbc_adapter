@@ -5,10 +5,10 @@ class TestConnectionManagement < Minitest::Test
     assert conn.active?
 
     conn.disconnect!
-    refute conn.active?
+    assert_not conn.active?
 
     conn.disconnect!
-    refute conn.active?
+    assert_not conn.active?
 
     conn.reconnect!
     assert conn.active?
