@@ -60,6 +60,7 @@ module ActiveRecord
             values  = stmt.to_a
             stmt.drop
             notification_payload[:row_count] = values.count
+            values = values&.map { |row| row&.map { |value| _type_cast_value(value) } }
             column_names = columns.keys.map { |key| format_case(key) }
             ActiveRecord::Result.new(column_names, values)
           end
@@ -91,6 +92,15 @@ module ActiveRecord
 
         def raw_execute(sql, name, async: false, allow_retry: false, materialize_transactions: true)
           @raw_connection.do(sql)
+        end
+
+        # type cast value to handle ODBC::TimeStamp
+        def _type_cast_value(value)
+          if value.is_a?(ODBC::TimeStamp)
+            Time.parse(value.to_s)
+          else
+            value
+          end
         end
 
         # Assume received identifier is in DBMS's data dictionary case.
