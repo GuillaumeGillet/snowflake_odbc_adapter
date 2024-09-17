@@ -110,6 +110,7 @@ module ActiveRecord
             args[:scale]     = col_scale || 0
             args[:precision] = col_limit
           end
+          args[:sql_type] = ::SnowflakeOdbcAdapter::Snowflake.type_mapper(col)
           ActiveRecord::ConnectionAdapters::SqlTypeMetadata.new(**args)
         end
 

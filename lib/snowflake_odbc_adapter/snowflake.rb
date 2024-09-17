@@ -3,11 +3,17 @@
 module SnowflakeOdbcAdapter
   # Snowflake specific overrides
   module Snowflake
-    PRIMARY_KEY = "NUMBER UNIQUE PRIMARY KEY AUTOINCREMENT START 1 INCREMENT 1 ORDER "
+    PRIMARY_KEY = "BIGINT UNIQUE PRIMARY KEY AUTOINCREMENT START 1 INCREMENT 1 ORDER "
     class << self
       # Remove Snowflake specific columns
       def column_filters(columns)
         columns.reject { |col| col[0] =~ /^snowflake$/i }.reject { |col| col[1] =~ /^account_usage$/i }
+      end
+
+      def type_mapper(col)
+        # Transform DECIMAL 38 0 into BIGINT ODBC Specific
+        return "bigint" if col[4] == ODBC::SQL_DECIMAL && col[8] == 0 && col[6] == 38
+        col[4]
       end
 
       # Remove outside database tables

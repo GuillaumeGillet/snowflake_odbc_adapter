@@ -66,7 +66,6 @@ module SnowflakeOdbcAdapter
       if create_params && !create_params.strip.empty? && abstract != :decimal
         result[:limit] = selected_row[2] # SQLGetTypeInfo: COL_SIZE
       end
-
       result
     end
 
