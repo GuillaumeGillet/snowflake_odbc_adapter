@@ -103,6 +103,7 @@ module ActiveRecord
           col_limit       = col[6]  # SQLColumns: COLUMN_SIZE
           args = { sql_type: col_sql_type, type: col_sql_type, limit: col_limit }
           col_native_type = col[5]  # SQLColumns: TYPE_NAME
+          args[:sql_type] = ::SnowflakeOdbcAdapter::Snowflake.type_mapper(col)
           args[:sql_type] = "boolean" if col_native_type == "BOOLEAN"
           args[:sql_type] = "json" if %w[VARIANT JSON STRUCT].include?(col_native_type)
           args[:sql_type] = "date" if col_native_type == "DATE"
@@ -110,7 +111,6 @@ module ActiveRecord
             args[:scale]     = col_scale || 0
             args[:precision] = col_limit
           end
-          args[:sql_type] = ::SnowflakeOdbcAdapter::Snowflake.type_mapper(col)
           ActiveRecord::ConnectionAdapters::SqlTypeMetadata.new(**args)
         end
 

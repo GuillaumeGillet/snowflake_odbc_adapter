@@ -19,4 +19,9 @@ class TestAttributes < Minitest::Test
     assert_kind_of Hash, User.first.attributes
     assert_kind_of Hash, Todo.first.attributes
   end
+
+  def test_json
+    assert_kind_of Hash, Document.first.data
+    assert_equal({ "key" => { "inner_key" => "value" } }, Document.first.data)
+  end
 end

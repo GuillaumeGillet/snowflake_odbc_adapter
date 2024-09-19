@@ -29,7 +29,22 @@ ActiveRecord::Schema.define do
     t.boolean :published, null: false, default: false
     t.timestamps null: false
   end
+
+  create_table :documents, force: true do |t|
+    t.json :data
+    t.timestamps null: false
+  end
 end
+
+class Document < ActiveRecord::Base
+end
+
+Document.connection.execute <<~SQL
+  INSERT INTO documents (data, created_at, updated_at)
+  SELECT PARSE_JSON('{"key": { "inner_key": "value"}}'), current_timestamp, current_timestamp
+SQL
+
+# As A json cannot be directly created for now
 
 class User < ActiveRecord::Base
   has_many :todos, dependent: :destroy
