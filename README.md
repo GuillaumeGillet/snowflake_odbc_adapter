@@ -3,13 +3,22 @@
 Based on the [odbc_adpter](https://github.com/localytics/odbc_adapter) that seems to not been maintain since rails 5.1. And despite the [fork](https://github.com/singlespot/odbc_adapter) we made to follow the rails evolution.
 We decide to create a new gem, dedicated to connect with the Snowflake odbc driver.
 
+This Gem is in a very early development
+
 ## Installation
 
-TODO
+In your Gemfile add the two dependencies
+
+```
+gem 'snowflake_odbc_adapter'
+gem 'ruby-odbc', :git => 'https://github.com/vhermecz/ruby-odbc.git', branch: 'main'
+```
+
+We had use a fork of *ruby-odbc* as the original gem is not maintain anymore and so, no compatible with ruby 3 or above
 
 ## Usage
 
-TODO: Write usage instructions here
+Right now the connection only work using a connection string
 
 ## Development
 
